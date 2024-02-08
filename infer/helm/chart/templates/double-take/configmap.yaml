@@ -1,0 +1,21 @@
+{{- if .Values.doubleTake.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: double-take-config
+data:
+  config.yml: |
+    mqtt:
+      host: mqtt.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.mqtt.mqttPort }}
+      username: {{ .Values.mqtt.auth.username }}
+      password: {{ .Values.mqtt.auth.password }}
+      topics:
+        frigate: frigate/events
+    frigate:
+      url: http://frigate.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.frigate.httpPort }}
+    detectors:
+      deepstack:
+        url: http://10.42.3.70:{{ .Values.deepstack.port }}
+        key: {{ .Values.deepstack.apiKey | quote }}
+        timeout: 45
+{{- end }}

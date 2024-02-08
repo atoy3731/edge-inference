@@ -1,0 +1,53 @@
+{{- if .Values.doubleTake.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: double-take
+  labels:
+    app: double-take
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: double-take
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/double-take/configmap.yaml") . | sha256sum }}
+      labels:
+        app: double-take
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.doubleTake.podSecurityContext | nindent 8 }}
+      containers:
+        - name: double-take
+          image: "{{ .Values.doubleTake.image }}:{{ .Values.doubleTake.tag }}"
+          imagePullPolicy: {{ .Values.doubleTake.pullPolicy }}
+          volumeMounts:
+          - mountPath: "/.storage/config/config.yml"
+            name: config
+            subPath: config.yml
+          ports:
+            - name: http
+              containerPort: {{ .Values.doubleTake.port }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.doubleTake.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.doubleTake.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: double-take-config
+{{- end }}

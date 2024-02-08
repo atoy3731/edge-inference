@@ -1,0 +1,17 @@
+{{- if .Values.doubleTake.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: double-take
+  labels:
+    app: double-take
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.doubleTake.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: double-take
+{{- end }}

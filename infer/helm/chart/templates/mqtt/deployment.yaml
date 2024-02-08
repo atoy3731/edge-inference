@@ -1,0 +1,93 @@
+{{ if .Values.mqtt.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt
+  labels:
+    app: mqtt
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mqtt
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/mqtt/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/mqtt/secret.yaml") . | sha256sum }}
+      labels:
+        app: mqtt
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.mqtt.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: password-gen
+          image: "{{ .Values.mqtt.image }}:{{ .Values.mqtt.tag }}"
+          imagePullPolicy: {{ .Values.mqtt.pullPolicy }}
+          volumeMounts:
+          - mountPath: "/creds"
+            name: creds
+          envFrom:
+          - secretRef:
+              name: mqtt-secret
+          command:
+          - /bin/ash
+          - -c
+          - |
+            #!/bin/ash
+
+            echo "Generating password file for Mosquitto.."
+            touch /creds/mosquitto.passwd
+            chown mosquitto:mosquitto /creds/mosquitto.passwd
+            chmod 700 /creds/mosquitto.passwd
+            mosquitto_passwd -b /creds/mosquitto.passwd $MQTT_USER $MQTT_PASSWORD
+      containers:
+        - name: mqtt
+          image: "{{ .Values.mqtt.image }}:{{ .Values.mqtt.tag }}"
+          imagePullPolicy: {{ .Values.mqtt.pullPolicy }}
+          volumeMounts:
+          - mountPath: "/mosquitto/config/mosquitto.conf"
+            name: config
+            subPath: mosquitto.conf
+          - mountPath: "/creds"
+            name: creds
+          {{- if .Values.frigate.persistence.enabled }}
+          - mountPath: "/mosquitto/data"
+            name: data
+          {{- end }}
+          ports:
+            - name: http-mqtt
+              containerPort: {{ .Values.mqtt.mqttPort }}
+              protocol: TCP
+            - name: http-websocket
+              containerPort: {{ .Values.mqtt.websocketPort }}
+              protocol: TCP
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: {{ .Values.mqtt.websocketPort }}
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 10
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: {{ .Values.mqtt.websocketPort }}
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 10
+      volumes:
+      - name: config
+        configMap:
+          name: mqtt-config
+      - name: creds
+        emptyDir: {}
+      {{- if .Values.mqtt.persistence.enabled }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: mqtt-pvc
+      {{- end }}
+{{- end }}

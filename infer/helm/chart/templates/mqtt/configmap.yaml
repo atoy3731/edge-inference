@@ -1,0 +1,17 @@
+{{- if .Values.mqtt.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mqtt-config
+data:
+  mosquitto.conf: |
+    log_dest file /mosquitto/log/mosquitto.log
+    log_dest stdout
+    password_file /creds/mosquitto.passwd
+    allow_anonymous false
+    bind_address 0.0.0.0
+    {{- if .Values.mqtt.persistence.enabled }}
+    persistence true
+    persistence_location /mosquitto/data/
+    {{- end }}
+{{- end }}

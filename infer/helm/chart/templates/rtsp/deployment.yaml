@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rtsp
+  labels:
+    app: rtsp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rtsp
+  template:
+    metadata:
+      labels:
+        app: rtsp
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.rtsp.podSecurityContext | nindent 8 }}
+      containers:
+        - name: rtsp
+          image: "{{ .Values.rtsp.image }}:{{ .Values.rtsp.tag }}"
+          imagePullPolicy: {{ .Values.rtsp.pullPolicy }}
+          ports:
+            - name: udp
+              containerPort: {{ .Values.rtsp.port }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 8889
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8889
+            initialDelaySeconds: 15
+            periodSeconds: 10

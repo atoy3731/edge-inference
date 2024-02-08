@@ -1,0 +1,70 @@
+{{- if .Values.deepstack.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepstack
+  labels:
+    app: deepstack
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: deepstack
+  template:
+    metadata:
+      labels:
+        app: deepstack
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.deepstack.podSecurityContext | nindent 8 }}
+      {{- if .Values.deepstack.gpuEnabled }}
+      runtimeClassName: nvidia
+      {{- end }}
+      containers:
+        - name: deepstack
+          image: "{{ .Values.deepstack.image }}:{{ .Values.deepstack.tag }}"
+          imagePullPolicy: {{ .Values.deepstack.pullPolicy }}
+          {{- if .Values.deepstack.gpuEnabled }}
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          {{- end }}
+          env:
+          - name: "VISION_FACE"
+            value: "True"
+          envFrom:
+          - secretRef:
+              name: deepstack-secret
+          {{- if .Values.deepstack.persistence.enabled }}
+          volumeMounts:
+          - mountPath: "/datastore"
+            name: data
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.deepstack.port }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.deepstack.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.deepstack.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+      {{- if .Values.deepstack.persistence.enabled }}
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: deepstack-pvc
+      {{- end }}
+{{- end }}

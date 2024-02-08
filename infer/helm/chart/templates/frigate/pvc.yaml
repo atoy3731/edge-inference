@@ -1,0 +1,13 @@
+{{- if .Values.frigate.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: frigate-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.frigate.persistence.size }}
+  storageClassName: {{ .Values.frigate.persistence.storageClass }}
+{{- end }}

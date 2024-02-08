@@ -1,0 +1,21 @@
+{{- if .Values.mqtt.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: mqtt
+  labels:
+    app: mqtt
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.mqtt.mqttPort }}
+      targetPort:  http-mqtt
+      protocol: TCP
+      name: http-mqtt
+    - port: {{ .Values.mqtt.websocketPort }}
+      targetPort:  http-websocket
+      protocol: TCP
+      name: http-websocket
+  selector:
+    app: mqtt
+{{- end }}

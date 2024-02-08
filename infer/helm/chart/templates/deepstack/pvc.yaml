@@ -1,0 +1,13 @@
+{{- if .Values.deepstack.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: deepstack-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.deepstack.persistence.size }}
+  storageClassName: {{ .Values.deepstack.persistence.storageClass }}
+{{- end }}

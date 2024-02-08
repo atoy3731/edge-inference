@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frigate
+  labels:
+    app: frigate
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: frigate
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/frigate/configmap.yaml") . | sha256sum }}
+      labels:
+        app: frigate
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.frigate.podSecurityContext | nindent 8 }}
+      containers:
+        - name: frigate
+          image: "{{ .Values.frigate.image }}:{{ .Values.frigate.tag }}"
+          imagePullPolicy: {{ .Values.frigate.pullPolicy }}
+          resources:
+            limits:
+              akri.sh/akri-coral: "1"
+          securityContext:
+            privileged: true
+          ports:
+            - name: rtsp
+              containerPort: {{ .Values.frigate.rtspPort }}
+              protocol: TCP
+            - name: http
+              containerPort: {{ .Values.frigate.httpPort }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.frigate.rtspPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.frigate.rtspPort }}
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          volumeMounts:
+          - mountPath: "/config/config.yml"
+            name: config
+            subPath: config.yml
+          - mountPath: "/dev/bus/usb"
+            name: coral
+          {{- if .Values.frigate.persistence.enabled }}
+          - mountPath: "/media/frigate"
+            name: data
+          {{- end }}
+      volumes:
+      - name: config
+        configMap:
+          name: frigate-config
+      - name: coral
+        hostPath:
+          path: /dev/bus/usb
+      {{- if .Values.frigate.persistence.enabled }}
+      - name: data
+        persistentVolumeClaim:
+          claimName: frigate-pvc
+      {{- end }}

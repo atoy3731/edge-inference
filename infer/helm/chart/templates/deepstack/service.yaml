@@ -1,0 +1,17 @@
+{{- if .Values.deepstack.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: deepstack
+  labels:
+    app: deepstack
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.deepstack.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: deepstack
+{{- end }}

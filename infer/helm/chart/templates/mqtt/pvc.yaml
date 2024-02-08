@@ -1,0 +1,13 @@
+{{- if .Values.mqtt.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mqtt-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.mqtt.persistence.size }}
+  storageClassName: {{ .Values.mqtt.persistence.storageClass }}
+{{- end }}
