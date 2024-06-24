@@ -11,7 +11,7 @@ spec:
   - name: edge
     clusterSelector:
       matchLabels:
-        cluster: edge
-        type: inference
+        cluster: turingpi
+        edge: enabled
   paths:
   - ./helm
