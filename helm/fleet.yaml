@@ -1,6 +1,14 @@
 defaultNamespace: edge-inference
 
+labels:
+  app: edge-inference
+
 helm:
   chart: ./chart
   valuesFiles:
   - values.yaml
+
+dependsOn:
+- selector:
+    matchLabels:
+      app: akri
