@@ -1,0 +1,37 @@
+deepstack:
+  ingress:
+    hosts:
+    - host: deepstack.ai.atoy.lol
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - deepstack.ai.atoy.lol
+      secretName: ai-cert
+  persistence:
+    enabled: true
+doubleTake:
+  ingress:
+    hosts:
+    - host: double-take.ai.atoy.lol
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - double-take.ai.atoy.lol
+      secretName: ai-cert
+frigate:
+  ingress:
+    hosts:
+    - host: frigate.ai.atoy.lol
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+    tls:
+    - hosts:
+      - frigate.ai.atoy.lol
+      secretName: ai-cert
+  persistence:
+    enabled: true

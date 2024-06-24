@@ -1,0 +1,6 @@
+defaultNamespace: edge-inference
+
+helm:
+  chart: ./chart
+  valuesFiles:
+  - values.yaml

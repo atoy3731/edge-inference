@@ -1,0 +1,17 @@
+kind: GitRepo
+apiVersion: fleet.cattle.io/v1alpha1
+metadata:
+  name: edge-inference
+  namespace: fleet-default
+spec:
+  repo: ssh://git@git-ssh.atoy.lol/home/edge-inference.git
+  clientSecretName: private-key
+  branch: main
+  targets:
+  - name: edge
+    clusterSelector:
+      matchLabels:
+        cluster: edge
+        type: inference
+  paths:
+  - ./helm
