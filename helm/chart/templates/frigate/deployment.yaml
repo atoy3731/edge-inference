@@ -15,6 +15,9 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/frigate/configmap.yaml") . | sha256sum }}
+        {{- if .Values.frigate.customModels }}
+        checksum/models-config: {{ include (print $.Template.BasePath "/frigate/models-configmap.yaml") . | sha256sum }}
+        {{- end }}
       labels:
         app: frigate
     spec:
