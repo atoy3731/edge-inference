@@ -18,6 +18,17 @@ data:
     {{- with .Values.frigate.detectors }}
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- if .Values.frigate.snapshots }}
+    snapshots:
+      enabled: True
+      clean_copy: True
+      timestamp: False
+      bounding_box: True
+      crop: False
+      retain:
+        default: 1
+      quality: 100
+    {{- end }}
     {{- if .Values.frigate.record }}
     record:
       enabled: True
