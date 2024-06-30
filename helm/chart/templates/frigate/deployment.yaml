@@ -31,10 +31,10 @@ spec:
           image: alpine
           imagePullPolicy: {{ .Values.frigate.pullPolicy }}
           command: 
-            - /bin/bash
+            - /bin/ash
             - -c
-            -  |
-              #!/bin/bash
+            - |
+              #!/bin/ash
               
               apk update && apk add wget
               
