@@ -8,10 +8,9 @@ spec:
   clientSecretName: private-key
   branch: main
   targets:
-  - name: edge
+  - name: inference
     clusterSelector:
       matchLabels:
-        cluster: turingpi
-        edge: enabled
+        inference: enabled
   paths:
   - ./helm
