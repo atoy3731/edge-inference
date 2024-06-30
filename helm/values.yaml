@@ -36,6 +36,7 @@ frigate:
       secretName: ai-cert
   persistence:
     enabled: true
+  record: true
   detectors:
     coral:
       type: edgetpu

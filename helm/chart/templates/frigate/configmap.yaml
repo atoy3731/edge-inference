@@ -18,6 +18,15 @@ data:
     {{- with .Values.frigate.detectors }}
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- if .Values.frigate.record }}
+    record:
+      enabled: True
+      events:
+        pre_capture: 2
+        post_capture: 2
+        retain:
+          default: 1
+    {{- end }}
     cameras:
       main:
         mqtt:

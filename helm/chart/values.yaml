@@ -18,6 +18,7 @@ frigate:
   podSecurityContext: {}
   httpPort: 5000
   rtspPort: 8555
+  record: false
   detectors:
     coral:
       type: edgetpu
