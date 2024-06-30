@@ -34,3 +34,8 @@ data:
         detect:
           width: 1280
           height: 720
+    {{- with .Values.frigate.objects }}
+    objects:
+      track:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}

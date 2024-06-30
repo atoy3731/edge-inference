@@ -42,5 +42,11 @@ frigate:
       device: usb
       model:
         path: "/models/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite"
+  objects:
+  - person
+  - banana
+  - umbrella
+  - hot dog
+
   customModels:
   - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
