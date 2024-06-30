@@ -39,7 +39,7 @@ spec:
               apk update && apk add wget
               
               for model in $(cat /input/models.txt); do
-                wget -P /models/ $(model)
+                wget -P /models/ $model
               done
           volumeMounts:
           - name: frigate-models
