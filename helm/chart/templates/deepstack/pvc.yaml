@@ -1,4 +1,4 @@
-{{- if and (.Values.deepstack.enabled) ().Values.deepstack.persistence.enabled) }}
+{{- if and (.Values.deepstack.enabled) (.Values.deepstack.persistence.enabled) }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:

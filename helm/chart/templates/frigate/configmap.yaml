@@ -15,9 +15,9 @@ data:
       enabled: False
       {{- end }}
     detectors:
-      coral:
-        type: edgetpu
-        device: usb
+    {{- with .Values.frigate.detectors }}
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     cameras:
       main:
         mqtt:

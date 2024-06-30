@@ -18,6 +18,10 @@ frigate:
   podSecurityContext: {}
   httpPort: 5000
   rtspPort: 8555
+  detectors:
+    coral:
+      type: edgetpu
+      device: usb
   persistence:
     enabled: true
     size: 5Gi

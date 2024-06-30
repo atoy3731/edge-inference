@@ -25,6 +25,28 @@ spec:
       serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.frigate.podSecurityContext | nindent 8 }}
+      {{- if .Values.frigate.customModels }}
+      initContainers:
+        - name: copy-models
+          image: alpine
+          imagePullPolicy: {{ .Values.frigate.pullPolicy }}
+          command: 
+            - /bin/bash
+            - -c
+            -  |
+              #!/bin/bash
+              
+              apk update && apk add wget
+              
+              for model in $(cat /input/models.txt); do
+                wget -P /models/ $(model)
+              done
+          volumeMounts:
+          - name: frigate-models
+            mountPath: /input
+          - name: frigate-models-dir
+            mountPath: /models
+      {{- end }}
       containers:
         - name: frigate
           image: "{{ .Values.frigate.image }}:{{ .Values.frigate.tag }}"
@@ -61,6 +83,10 @@ spec:
           - mountPath: "/media/frigate"
             name: data
           {{- end }}
+          {{- if .Values.frigate.customModels }}
+          - name: frigate-models-dir
+            mountPath: /models
+          {{- end }}
       volumes:
       - name: config
         configMap:
@@ -72,4 +98,11 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: frigate-pvc
+      {{- end }}
+      {{- if .Values.frigate.customModels }}
+      - name: frigate-models
+        configMap:
+          name: frigate-models
+      - name: frigate-models-dir
+        emptyDir: {}
       {{- end }}
