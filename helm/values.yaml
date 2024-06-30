@@ -1,4 +1,5 @@
 deepstack:
+  enabled: false
   ingress:
     hosts:
     - host: deepstack.ai.atoy.lol
