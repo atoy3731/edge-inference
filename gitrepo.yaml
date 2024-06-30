@@ -4,7 +4,7 @@ metadata:
   name: edge-inference
   namespace: fleet-default
 spec:
-  repo: ssh://git@git-ssh.atoy.lol/home/edge-inference.git
+  repo: git@github.com:atoy3731/edge-inference.git
   clientSecretName: private-key
   branch: main
   targets:
