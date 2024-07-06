@@ -31,7 +31,7 @@ spec:
       {{- if .Values.frigate.customModels }}
       initContainers:
         - name: copy-models
-          image: alpine
+          image: alpine:3.20
           imagePullPolicy: {{ .Values.frigate.pullPolicy }}
           command: 
             - /bin/ash
