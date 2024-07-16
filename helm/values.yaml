@@ -123,12 +123,12 @@ frigate:
   - sink
   - refrigerator
   - book
-  - clock
-  - vase
-  - scissors
-  - teddy bear
-  - hair drier
-  - toothbrush
+  # - clock
+  # - vase
+  # - scissors
+  # - teddy bear
+  # - hair drier
+  # - toothbrush
 
   filters:
     person:
