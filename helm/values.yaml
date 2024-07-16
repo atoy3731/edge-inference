@@ -129,10 +129,13 @@ frigate:
   # - teddy bear
   # - hair drier
   # - toothbrush
+<<<<<<< HEAD
 
   filters:
     person:
       threshold: 0.6
+=======
+>>>>>>> 0b3b87c (Update values.yaml)
 
   filters:
     person:
