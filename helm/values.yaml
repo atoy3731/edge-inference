@@ -123,12 +123,12 @@ frigate:
   - sink
   - refrigerator
   - book
-  - clock
-  - vase
-  - scissors
-  - teddy bear
-  - hair drier
-  - toothbrush
+  # - clock
+  # - vase
+  # - scissors
+  # - teddy bear
+  # - hair drier
+  # - toothbrush
 
   customModels:
   - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
