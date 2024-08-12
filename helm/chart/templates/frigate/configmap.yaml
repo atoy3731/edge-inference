@@ -67,6 +67,10 @@ data:
               roles:
                 - detect
                 - record
+    go2rtc:
+      streams:
+        outside:
+          - rtspx://10.0.10.190:7441/5gtmw9rWE6VhbGNx
     {{- with .Values.frigate.objects }}
     objects:
       track:
