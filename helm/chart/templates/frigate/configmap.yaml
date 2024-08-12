@@ -53,6 +53,10 @@ data:
               roles:
                 - detect
                 - record
+            - path: rtsps://10.0.10.190:7441/kDuGZVjvs7cPYxcS?enableSrtp
+              roles:
+                - detect
+                - record
     {{- with .Values.frigate.objects }}
     objects:
       track:
