@@ -26,8 +26,8 @@ data:
       bounding_box: True
       crop: False
       retain:
-        default: 1
-      quality: 100
+        default: 5
+      quality: 70
     {{- end }}
     {{- if .Values.frigate.record }}
     record:
