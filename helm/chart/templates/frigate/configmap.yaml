@@ -63,10 +63,3 @@ data:
       filters:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-
-    review:
-      detections:
-        labels:
-          - car
-          - person
-          - remote
