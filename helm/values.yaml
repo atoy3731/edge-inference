@@ -43,7 +43,7 @@ frigate:
       type: cpu
       num_threads: 1
       model:
-        path: "/models/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite"
+        path: "/models/ssdlite_mobiledet_coco_qat_postprocess.tflite"
     # coral:
     #   type: edgetpu
     #   device: usb
@@ -140,4 +140,5 @@ frigate:
       threshold: 0.6
 
   customModels:
-  - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
+  # - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
+  - https://github.com/google-coral/test_data/raw/master/ssdlite_mobiledet_coco_qat_postprocess.tflite
