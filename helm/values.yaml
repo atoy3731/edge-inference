@@ -39,11 +39,16 @@ frigate:
   record: false
   snapshots: true
   detectors:
-    coral:
-      type: edgetpu
-      device: usb
+    cpu1:
+      type: cpu
+      num_threads: 1
       model:
         path: "/models/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite"
+    # coral:
+    #   type: edgetpu
+    #   device: usb
+    #   model:
+    #     path: "/models/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite"
   objects:
   - person
   - banana
