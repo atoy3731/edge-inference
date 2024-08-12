@@ -36,7 +36,7 @@ frigate:
       secretName: ai-cert
   persistence:
     enabled: true
-  record: true
+  record: false
   snapshots: true
   detectors:
     # cpu1:
