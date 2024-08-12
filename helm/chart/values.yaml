@@ -21,9 +21,9 @@ frigate:
   record: false
   snapshots: false
   detectors:
-    coral:
-      type: edgetpu
-      device: usb
+    # coral:
+    #   type: edgetpu
+    #   device: usb
   persistence:
     enabled: true
     size: 5Gi
