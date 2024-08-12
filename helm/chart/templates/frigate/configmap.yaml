@@ -63,7 +63,7 @@ data:
           height: 500
         ffmpeg:
           inputs:
-            - path: rtsp://10.0.10.190:7441/5gtmw9rWE6VhbGNx
+            - path: rtspx://10.0.10.190:7441/5gtmw9rWE6VhbGNx
               roles:
                 - detect
                 - record
