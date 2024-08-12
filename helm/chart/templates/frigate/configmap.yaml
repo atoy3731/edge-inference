@@ -40,6 +40,7 @@ data:
     {{- end }}
     cameras:
       main:
+        enabled: True
         mqtt:
           timestamp: False
           bounding_box: False
@@ -51,9 +52,7 @@ data:
             - path: rtsp://rtsp.{{ .Release.Namespace }}.svc.cluster.local:8554/cam
               roles:
                 - detect
-        detect:
-          width: 1280
-          height: 720
+                - record
     {{- with .Values.frigate.objects }}
     objects:
       track:
