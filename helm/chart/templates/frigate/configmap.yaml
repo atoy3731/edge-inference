@@ -53,25 +53,25 @@ data:
               roles:
                 - detect
                 - record
-      outside:
-        enabled: True
-        mqtt:
-          timestamp: False
-          bounding_box: False
-          crop: True
-          quality: 100
-          height: 500
-        ffmpeg:
-          inputs:
-            - path: rtsp://127.0.0.1:8554/outside
-              input_args: preset-rtsp-restream
-              roles:
-                - record
-                - detect
-    go2rtc:
-      streams:
-        outside:
-          - rtspx://10.0.10.190:7441/5gtmw9rWE6VhbGNx
+    #   outside:
+    #     enabled: True
+    #     mqtt:
+    #       timestamp: False
+    #       bounding_box: False
+    #       crop: True
+    #       quality: 100
+    #       height: 500
+    #     ffmpeg:
+    #       inputs:
+    #         - path: rtsp://127.0.0.1:8554/outside
+    #           input_args: preset-rtsp-restream
+    #           roles:
+    #             - record
+    #             - detect
+    # go2rtc:
+    #   streams:
+    #     outside:
+    #       - rtspx://10.0.10.190:7441/5gtmw9rWE6VhbGNx
     {{- with .Values.frigate.objects }}
     objects:
       track:

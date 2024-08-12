@@ -39,11 +39,6 @@ frigate:
   record: true
   snapshots: true
   detectors:
-    # cpu1:
-    #   type: cpu
-    #   num_threads: 1
-    #   model:
-    #     path: "/models/ssdlite_mobiledet_coco_qat_postprocess.tflite"
     coral:
       type: edgetpu
       device: usb
