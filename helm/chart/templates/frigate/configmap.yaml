@@ -59,3 +59,7 @@ data:
       track:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with .Values.frigate.filters }}
+    filters:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
