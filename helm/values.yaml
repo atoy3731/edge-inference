@@ -130,6 +130,10 @@ frigate:
   # - teddy bear
   # - hair drier
   # - toothbrush
+  filters:
+    tv:
+      min_score: 0.5
+      threshold: 0.6
 
   customModels:
   - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
