@@ -32,11 +32,12 @@ data:
     {{- if .Values.frigate.record }}
     record:
       enabled: True
-      events:
-        pre_capture: 2
-        post_capture: 2
+      retain:
+        days: 0
+      alerts:
         retain:
-          default: 1
+          days: 30
+          mode: motion
     {{- end }}
     cameras:
       main:
