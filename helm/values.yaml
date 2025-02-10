@@ -37,14 +37,7 @@ frigate:
   persistence:
     enabled: true
     storageClass: "longhorn"
-  record:
-    enabled: true
-    retain:
-      days: 0
-    alerts:
-      retain:
-        days: 30
-        mode: motion
+  record: true
   snapshots: true
   detectors:
     coral:
