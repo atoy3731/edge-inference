@@ -36,6 +36,7 @@ frigate:
       secretName: ai-cert
   persistence:
     enabled: true
+    size: 15Gi
     storageClass: "longhorn"
   record: true
   snapshots: true
