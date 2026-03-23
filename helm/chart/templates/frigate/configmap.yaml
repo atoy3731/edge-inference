@@ -32,11 +32,15 @@ data:
     {{- if .Values.frigate.record }}
     record:
       enabled: True
-      retain:
+      continuous:
         days: 0
       alerts:
         retain:
           days: 30
+          mode: motion
+      detections:
+        retain:
+          days: 10
           mode: motion
     {{- end }}
     cameras:
