@@ -28,26 +28,41 @@ spec:
       serviceAccountName: {{ include "ffmpeg.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.frigate.podSecurityContext | nindent 8 }}
-      {{- if .Values.frigate.customModels }}
+      {{- if or .Values.frigate.customModels .Values.frigate.customLabels }}
       initContainers:
         - name: copy-models
-          image: harbor.atoy.dev/public/ubuntu-utils:1.0
+          image: alpine:3.20
           imagePullPolicy: {{ .Values.frigate.pullPolicy }}
           command: 
-            - /bin/sh
+            - /bin/ash
             - -c
             - |
-              set -e
-              echo "Downloading models..."
+              #!/bin/ash
+              
+              apk update && apk add wget
+              
+              {{- if .Values.frigate.customModels }}
               for model in $(cat /input/models.txt); do
-                echo "Fetching: $model"
-                curl -L --fail --retry 5 --retry-delay 2 -o /models/$(basename $model) "$model"
+                wget -P /models/ $model
               done
+              {{- end }}
+
+              {{- if .Values.frigate.customLabels }}
+              for label in $(cat /input/labels.txt); do
+                wget -P /labels/ $label
+              done
+              {{- end }}
           volumeMounts:
-          - name: frigate-models
+          - name: frigate-input
             mountPath: /input
+          {{- if .Values.frigate.customModels }}
           - name: frigate-models-dir
             mountPath: /models
+          {{- end }}
+          {{- if .Values.frigate.customLabels }}
+          - name: frigate-labels-dir
+            mountPath: /labels
+          {{- end }}
       {{- end }}
       containers:
         - name: frigate
@@ -89,6 +104,10 @@ spec:
           - name: frigate-models-dir
             mountPath: /models
           {{- end }}
+          {{- if .Values.frigate.customLabels }}
+          - name: frigate-labels-dir
+            mountPath: /labels
+          {{- end }}
       volumes:
       - name: config
         configMap:
@@ -101,10 +120,16 @@ spec:
         persistentVolumeClaim:
           claimName: frigate-pvc
       {{- end }}
-      {{- if .Values.frigate.customModels }}
-      - name: frigate-models
+      {{- if or .Values.frigate.customModels .Values.frigate.customLabels }}
+      - name: frigate-input
         configMap:
-          name: frigate-models
+          name: frigate-input
+      {{- if .Values.frigate.customModels }}
       - name: frigate-models-dir
         emptyDir: {}
+      {{- end }}
+      {{- if .Values.frigate.customLabels }}
+      - name: frigate-labels-dir
+        emptyDir: {}
+      {{- end }}
       {{- end }}

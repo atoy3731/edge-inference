@@ -1,11 +1,15 @@
-{{- if .Values.frigate.customModels }}
+{{- if or .Values.frigate.customModels .Values.frigate.customLabels }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: frigate-models
+  name: frigate-input
 data:
   models.txt: |-
   {{- range .Values.frigate.customModels }}
+    {{- . | nindent 4 }}
+  {{- end }}
+  labels.txt: |-
+  {{- range .Values.frigate.customLabels }}
     {{- . | nindent 4 }}
   {{- end }}
 {{- end }}
