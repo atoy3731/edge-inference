@@ -43,13 +43,15 @@ spec:
               
               {{- if .Values.frigate.customModels }}
               for model in $(cat /input/models.txt); do
-                wget -P /models/ $model
+                echo "Downloading model '$model'.."
+                wget -P /models/ "$model"
               done
               {{- end }}
 
               {{- if .Values.frigate.customLabels }}
               for label in $(cat /input/labels.txt); do
-                wget -P /labels/ $label
+                echo "Downloading label '$label'.."
+                wget -P /labels/ "$label"
               done
               {{- end }}
           volumeMounts:
