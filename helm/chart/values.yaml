@@ -20,6 +20,7 @@ frigate:
   rtspPort: 8555
   record: false
   snapshots: false
+  detect: false
   detectors:
     # coral:
     #   type: edgetpu

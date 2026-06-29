@@ -29,6 +29,10 @@ data:
         default: 5
       quality: 70
     {{- end }}
+    {{- if .Values.frigate.detect }}
+    detect:
+      enabled: True
+    {{- end }}
     {{- if .Values.frigate.record }}
     record:
       enabled: True

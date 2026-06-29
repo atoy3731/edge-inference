@@ -136,6 +136,8 @@ frigate:
       min_score: 0.5
       threshold: 0.6
 
+  detect: true
+
   customModels:
   - http://nas.atoy.lol:8686/spaghettinet_edgetpu_l_compiled.tflite
   # - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
