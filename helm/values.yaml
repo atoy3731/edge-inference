@@ -45,7 +45,7 @@ frigate:
       type: edgetpu
       device: usb
       model:
-        path: "/models/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite"
+        path: "/models/spaghettinet_edgetpu_l_compiled.tflite"
   objects:
   - person
   - banana
@@ -137,9 +137,10 @@ frigate:
       threshold: 0.6
 
   customModels:
-  - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
-  - https://github.com/dbro/frigate-detector-edgetpu-yolo9/releases/download/v1.0/yolov9-s-relu6-best_320_int8_edgetpu.tflite
+  - https://git.atoy.lol/home/edge-inference/raw/branch/main/spaghettinet_edgetpu_l_compiled.tflite
+  # - https://raw.githubusercontent.com/google-coral/test_data/master/ssdlite_mobiledet_coco_qat_postprocess_edgetpu.tflite
+  # - https://github.com/dbro/frigate-detector-edgetpu-yolo9/releases/download/v1.0/yolov9-s-relu6-best_320_int8_edgetpu.tflite
 
-  customLabels:
-  - https://raw.githubusercontent.com/dbro/frigate-detector-edgetpu-yolo9/main/labels-coco17.txt
+  customLabels: []
+  # - https://raw.githubusercontent.com/dbro/frigate-detector-edgetpu-yolo9/main/labels-coco17.txt
   # - https://github.com/google-coral/test_data/raw/master/ssdlite_mobiledet_coco_qat_postprocess.tflite
