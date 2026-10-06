@@ -14,7 +14,7 @@ ffmpeg:
 frigate:
   image: ghcr.io/blakeblackshear/frigate
   tag: stable
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   podSecurityContext: {}
   httpPort: 5000
   rtspPort: 8555

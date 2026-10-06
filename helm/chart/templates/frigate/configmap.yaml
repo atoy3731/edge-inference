@@ -21,7 +21,6 @@ data:
     {{- if .Values.frigate.snapshots }}
     snapshots:
       enabled: True
-      clean_copy: True
       timestamp: False
       bounding_box: True
       crop: False
